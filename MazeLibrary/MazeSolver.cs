@@ -7,66 +7,56 @@ namespace MazeLibrary
     public class MazeSolver
     {
         private int[,] _labirint;
-        private int _x;
-        private int _y;
-        private int[,] _passLabirint;
+        private int _row;
+        private int _column;
         private List<int> _coordsList = new List<int>();
 
-        public MazeSolver(int[,] mazeModel, int startZ, int startY)
+        public MazeSolver(int[,] mazeModel, int startZ, int startColumn)
         {
-            if (startZ < 0 || startY < 0)
+            if (startZ < 0 || startColumn < 0)
             {
-                throw new ArgumentException($"{nameof(startZ)}, {nameof(startY)}");
+                throw new ArgumentException($"{nameof(startZ)}, {nameof(startColumn)}");
             }
 
             _labirint = mazeModel ?? throw new ArgumentNullException(nameof(mazeModel));
-            _x = startZ;
-            _y = startY;
+            _row = startZ;
+            _column = startColumn;
         }
 
         public int[,] MazeWithPass()
         {
-            _passLabirint = new int[_labirint.GetLength(1), _labirint.GetLength(1)];
-
             int k = 0;
             int counter = 0;
-            for (int i = 0; i < _labirint.GetLength(1); i++)
-            {
-                for (int j = 0; j < _labirint.GetLength(0); j++)
-                {
-                    _passLabirint[i, j] = _labirint[i, j];
-                }
-            }
 
             PassMaze();
 
 
-            while (k != _coordsList.Capacity - 2)
+            while (k != _coordsList.Count)
             {
-                _passLabirint[_coordsList[k], _coordsList[++k]] = ++counter;
-                k++;
+                _labirint[_coordsList[k], _coordsList[k + 1]] = ++counter;
+                k += 2;
             }
 
 
-            return _passLabirint;
+            return _labirint;
         }
 
         public void PassMaze()
         {
-            while (_x != -1 && _y != -1)
+            while (_row != -1 && _column != -1)
             {
-                _coordsList.Add(_x);
-                _coordsList.Add(_y);
-                PassHelper(_labirint, ref _x, ref _y, _coordsList);
+                _coordsList.Add(_row);
+                _coordsList.Add(_column);
+                PassHelper(_labirint, ref _row, ref _column, _coordsList);
             }
 
         }
 
-        private bool IsSameWay(int x, int y, List<int> coord)
+        private bool IsSameWay(int row, int column, List<int> coord)
         {
-            for (int i = 0; i < coord.Capacity - 2; i++)
+            for (int i = 0; i < coord.Count - 2; i += 2)
             {
-                if (x == coord[i] && y == coord[++i])
+                if (row == coord[i] && column == coord[i + 1])
                 {
                     return true;
                 }
@@ -74,46 +64,61 @@ namespace MazeLibrary
 
             return false;
         }
-        private void PassHelper(int[,] labirint, ref int x, ref int y, List<int> coords)
+
+        //private bool IsWrongWay(ref int row, ref int column, List<int> coord)
+        //{
+        //    if (row == -1 && column == -1)
+        //    {
+        //        if ()
+        //        {
+                    
+        //        }
+        //    }
+        //}
+        private void PassHelper(int[,] labirint, ref int row, ref int column, List<int> coords)
         {
-            int newX = -1;
-            int newY = -1;
+            if ((column - 1) >= 0)
+            {
+                if (labirint[row, column - 1] == 0 && !IsSameWay(row, column - 1, coords))
+                {
+                    column = column - 1;
+                    return;
+                }
 
-            if ((y + 1) < labirint.GetLength(0))
-            {
-                if (!IsSameWay(x, y + 1, coords) && labirint[x, y + 1] == 0)
-                {
-                    newX = x;
-                    newY = y + 1;
-                }
-            }
-            if ((y - 1) >= 0)
-            {
-                if (!IsSameWay(x, y - 1, coords) && labirint[x, y - 1] == 0)
-                {
-                    newX = x;
-                    newY = y - 1;
-                }
-            }
-            if ((x + 1) < labirint.GetLength(1))
-            {
-                if (!IsSameWay(x + 1, y, coords) && labirint[x + 1, y] == 0)
-                {
-                    newX = x + 1;
-                    newY = y;
-                }
-            }
-            if ((x - 1) >= 0)
-            {
-                if (!IsSameWay(x - 1, y, coords) && labirint[x - 1, y] == 0)
-                {
-                    newX = x - 1;
-                    newY = y;
-                }
             }
 
-            x = newX;
-            y = newY;
+            if ((column + 1) < labirint.GetLength(0))
+            {
+                if (labirint[row, column + 1] == 0 && !IsSameWay(row, column + 1, coords))
+                {
+                    column = column + 1;
+                    return;
+                }
+
+            }
+
+            if ((row - 1) >= 0)
+            {
+                if (labirint[row - 1, column] == 0 && !IsSameWay(row - 1, column, coords))
+                {
+                    row = row - 1;
+                    return;
+                }
+
+            }
+
+            if ((row + 1) < labirint.GetLength(1))
+            {
+                if (labirint[row + 1, column] == 0 && !IsSameWay(row + 1, column, coords))
+                {
+                    row = row + 1;
+                    return;
+                }
+
+            }
+
+            row = -1;
+            column = -1;
         }
     }
 }

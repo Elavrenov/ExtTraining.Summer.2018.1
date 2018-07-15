@@ -15,10 +15,8 @@ namespace MazeLibrary.Tests
             new int[,]
             {
                 { -1, -1, -1, -1, -1, -1 },
-                //{  0,  0,  0, -1,  0, -1 },
-                //{ -1,  0, -1, -1,  0, -1 },
-                {  0,  0,  0, -1,  -1, -1 },//
-                { -1,  0, -1, -1,  -1, -1 },//
+                {  0,  0,  0, -1,  0, -1 },
+                { -1,  0, -1, -1,  0, -1 },
                 { -1,  0, -1,  0,  0,  0 },
                 { -1,  0,  0,  0, -1, -1 },
                 { -1, -1, -1, -1, -1, -1 }
@@ -61,7 +59,7 @@ namespace MazeLibrary.Tests
                 { -1,  0, -1, -1, -1, -1,  0, -1,  0, -1,  0, -1 },
                 { -1,  0,  0,  0,  0,  0,  0, -1,  0,  0,  0, -1 },
                 { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
-            }          
+            }
         };
 
         private readonly int[][,] result = new int[][,]
@@ -69,8 +67,8 @@ namespace MazeLibrary.Tests
             new int[,]
             {
                 { -1, -1, -1, -1, -1, -1 },
-                { 10,  9,  0, -1,  -1, -1 },// -1 - > 0
-                { -1,  8, -1, -1,  -1, -1 },// -1 -> 0
+                { 10,  9,  0, -1,  0, -1 },
+                { -1,  8, -1, -1,  0, -1 },
                 { -1,  7, -1,  3,  2,  1 },
                 { -1,  6,  5,  4, -1, -1 },
                 { -1, -1, -1, -1, -1, -1 }
@@ -131,21 +129,19 @@ namespace MazeLibrary.Tests
         [Test]
         public void PassMaze_SuccessfulTests()
         {
-            // for (int i = 0; i < sourceData.Length; i++)
-            // {
-            // MazeSolver solver = new MazeSolver(sourceData[i], startXs[i], startYs[i]);
-            MazeSolver solver = new MazeSolver(sourceData[0], startXs[0], startYs[0]);
+            for (int i = 0; i < sourceData.Length; i++)
+            {
+                MazeSolver solver = new MazeSolver(sourceData[i], startXs[i], startYs[i]);
 
+                solver.PassMaze();
 
-            solver.PassMaze();
-
-                if (!MatrixAreEquals(solver.MazeWithPass(), result[0]))
+                if (!MatrixAreEquals(solver.MazeWithPass(), result[i]))
                 {
-                    
+                    Assert.Fail();
                 }
 
-            Assert.AreEqual(result[0],solver.MazeWithPass());
-           // }
+                Assert.Pass();
+            }
         }
 
         private static bool MatrixAreEquals(int[,] lhs, int[,] rhs)
@@ -169,7 +165,7 @@ namespace MazeLibrary.Tests
             {
                 for (int j = 0; j < lhs.GetLength(0); j++)
                 {
-                    if (lhs[i,j] != rhs[i,j])
+                    if (lhs[i, j] != rhs[i, j])
                     {
                         return false;
                     }
