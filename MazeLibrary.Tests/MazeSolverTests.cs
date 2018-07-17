@@ -1,14 +1,14 @@
-﻿using System;
-using NUnit.Framework;
-
-namespace MazeLibrary.Tests
+﻿namespace MazeLibrary.Tests
 {
+    using System;
+    using NUnit.Framework;
+
     [TestFixture]
     public class MazeSolverTests
     {
-        private readonly int[] startXs = { 3, 0, 1, 0 };
+        private readonly int[] startXs = { 3, 0, 1, 0, 6 };
 
-        private readonly int[] startYs = { 5, 4, 0, 1 };
+        private readonly int[] startYs = { 5, 4, 0, 1, 1 };
 
         private readonly int[][,] sourceData = new int[][,]
         {
@@ -59,6 +59,16 @@ namespace MazeLibrary.Tests
                 { -1,  0, -1, -1, -1, -1,  0, -1,  0, -1,  0, -1 },
                 { -1,  0,  0,  0,  0,  0,  0, -1,  0,  0,  0, -1 },
                 { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
+            },
+            new int[,]
+            {
+                {-1,0,-1,-1,-1,-1,-1 },
+                {-1,0,-1,-1,-1,-1,-1 },
+                {-1,0,-1,-1,-1,-1,-1 },
+                {-1,0,-1,-1,-1,-1,-1 },
+                {-1,0,-1,-1,-1,-1,-1 },
+                {-1,0,-1,-1,-1,-1,-1 },
+                {-1,0,-1,-1,-1,-1,-1 }
             }
         };
 
@@ -111,6 +121,16 @@ namespace MazeLibrary.Tests
                 { -1, 10, -1, -1, -1, -1, 17, -1,  0, -1,  0, -1 },
                 { -1, 11, 12, 13, 14, 15, 16, -1,  0,  0,  0, -1 },
                 { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
+            },
+            new int[,]
+            {
+                {-1,7,-1,-1,-1,-1,-1 },
+                {-1,6,-1,-1,-1,-1,-1 },
+                {-1,5,-1,-1,-1,-1,-1 },
+                {-1,4,-1,-1,-1,-1,-1 },
+                {-1,3,-1,-1,-1,-1,-1 },
+                {-1,2,-1,-1,-1,-1,-1 },
+                {-1,1,-1,-1,-1,-1,-1 }
             }
         };
 
